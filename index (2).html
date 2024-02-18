@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+
+  <title>Browser</title>
+
+	<style>
+	*{
+		margin:0;
+		padding:0;
+		box-sizing:border-box;
+	}	
+	body{
+		background-color:grey;
+	}
+	
+	h1{
+		margin-top:30px;
+
+		text-align:center;
+	}
+	
+	button{
+		padding:10px;
+		border-radius:5px;
+		outline:none;
+		border:0px;
+		margin:10px;
+	}
+	
+	button:active{
+		transform:translateY(3px);
+	}
+	
+	<!--
+	
+	-->
+	
+	#sorting{
+		display:flex;
+		justify-content:end;
+	}
+	#images{
+		display:flex;
+		justify-content:center;
+		flex-wrap:wrap;
+		text-align:center;
+	}
+	
+
+	#images div {
+		margin:10px;
+		
+	}
+	img{
+		width:300px;
+		height:150px;
+	}
+	#nemijlocitImaginea{
+		width:450px;
+	}
+	#primulDiv{
+		display:flex;
+		flex-direction:column;
+	}
+	#nemijlocitImaginea img{
+		width:100%;
+	}
+	
+	#asc, #desc, #alphaAZ{
+		cursor:pointer;
+	}
+
+	#searchBox{
+		border-radius:5px;
+		outline:none;
+		margin:10px;
+		padding: 10px 40px;
+		background-image: url('search.png');
+		width:200px;
+		background-repeat:no-repeat;
+		background-position: 5px -3px;
+		border:0;
+		
+	}
+	</style>
+
+</head>
+
+<body>
+  <h1>Welcome to Ds' Store </h1>
+  <div id="sorting">
+	<button id="asc" onclick="sortByAscending()">Sort by price ascending </button>
+    	<button id="desc" onclick="sortByDescending()">Sort by price descending </button>
+	<button id="alphaAZ" onclick="sortAlphaAZ()">Sort alphabetically</button>
+	<input id="searchBox" type="text" placeholder="Search...">
+  	
+  </div>
+  
+  <div id="images"> </div>
+  <script>
+	
+
+   	const objects = [
+	{
+		Manufacturer:"Ray Ban",
+		Model: "Allure",
+		Price:99,
+		foto:"1.png"
+	},
+	{
+		Manufacturer:"Ray Ban",
+		Model: "Wildcart",
+		Price:95,
+		foto:"2.png"
+	},
+	{
+		Manufacturer:"Ray Ban",
+		Model: "Samsonite",
+		Price:39,
+		foto:"3.png"
+	},
+	{
+		Manufacturer:"Oakley",
+		Model: "Arnette",
+		Price:49,
+		foto:"4.png"
+	},
+	{
+		Manufacturer:"Stevenson",
+		Model: "Blackbird",
+		Price:19,
+		foto:"5.png"
+	},
+	{
+		Manufacturer:"Police",
+		Model: "Passion",
+		Price:89,
+		foto:"6.png"
+	},
+	{
+		Manufacturer:"Ronalds",
+		Model: "Future",
+		Price:99,
+		foto:"7.png"
+	},
+	{
+		Manufacturer:"Robertha",
+		Model: "Summer",
+		Price:59,
+		foto:"8.png"
+	},
+	{
+		Manufacturer:"Gucci",
+		Model: "Yellow Sun",
+		Price:29,
+		foto:"9.png"
+	},
+	{
+		Manufacturer:"Scene",
+		Model: "Cosmica",
+		Price:79,
+		foto:"10.png"
+	},
+	{
+		Manufacturer:"Silhouette",
+		Model: "Perfection",
+		Price:9,
+		foto:"11.png"
+	},
+	{
+		Manufacturer:"Silhouette",
+		Model: "Serenity",
+		Price:199,
+		foto:"12.png"
+	}
+	]
+
+	for(let i=0; i<objects.length; i++){
+		document.getElementById("images").innerHTML += `
+			<div class="imagine">
+
+				<img src=${objects[i].foto}>
+
+				<div class="description">
+					<p>${objects[i].Manufacturer} - ${objects[i].Model}, ${objects[i].Price}$</p>
+				</div>
+			</div>`;
+	}
+
+
+let flag1=0;
+let ascBtn = document.getElementById("asc");
+let descBtn = document.getElementById("desc");
+let alphaAZBtn = document.getElementById("alphaAZ");
+
+function changeState(tipulButonului){
+	
+	if(tipulButonului == "asc"){
+		ascBtn.disabled = true;
+		ascBtn.style.cursor = "not-allowed";
+		descBtn.disabled = false;
+		alphaAZBtn.disabled = false;
+	
+		descBtn.style.cursor = "pointer";
+		alphaAZBtn.style.cursor = "pointer";
+	}
+
+	else if(tipulButonului == "desc"){
+		descBtn.disabled = true;
+		descBtn.style.cursor = "not-allowed";
+
+		ascBtn.disabled = false;
+		ascBtn.style.cursor = "pointer";
+		alphaAZBtn.disabled = false;
+		alphaAZBtn.style.cursor = "pointer";
+	}
+
+	else if(tipulButonului == "alpha"){
+		alphaAZBtn.disabled = true;
+		alphaAZBtn.style.cursor = "not-allowed";
+
+		descBtn.disabled = false;
+		ascBtn.disabled = false;
+		descBtn.style.cursor = "pointer";
+		ascBtn.style.cursor = "pointer";
+	}
+}
+
+function sortAlphaAZ(){
+	objects.sort(function(a, b){
+    		let x = a.Manufacturer.toLowerCase();
+    		let y = b.Manufacturer.toLowerCase();
+    		if (x < y) {return -1;}
+		if (x > y) {return 1;}
+    		return 0;
+  });
+	rearrange(objects);
+	changeState("alpha");	
+}
+
+function sortByAscending(){
+	console.log("Ascending");
+	const sirCrescator = objects.sort((a,b) => a.Price - b.Price);
+	rearrange(sirCrescator);
+	changeState("asc");	
+}
+
+function sortByDescending(){
+	console.log("Descending");
+	const sirDescrescator = objects.sort((a,b) => b.Price - a.Price);
+	rearrange(sirDescrescator);
+	changeState("desc");
+}
+
+function rearrange(noulSir){
+	const imagesDiv = document.getElementById("images");
+	imagesDiv.innerHTML = "";
+	for(let i=0; i<noulSir.length; i++){
+		document.getElementById("images").innerHTML += `
+			<div class="imagine">
+
+				<img src=${noulSir[i].foto}>
+
+				<div class="description">
+					<p>${noulSir[i].Manufacturer} - ${noulSir[i].Model}, ${noulSir[i].Price}$</p>
+				</div>
+			</div>`;	
+	}
+}
+
+// Add an event listener to detect changes in the search box
+document.getElementById("searchBox").addEventListener("input", function() {
+    // Get the search query from the input value
+    let searchQuery = this.value.toLowerCase();
+
+    // Filter the objects array based on the search query
+    let filteredObjects = objects.filter(function(item) {
+        // Convert manufacturer, model, and price to lowercase for case-insensitive search
+        let manufacturer = item.Manufacturer.toLowerCase();
+        let model = item.Model.toLowerCase();
+        let price = item.Price.toString().toLowerCase();
+
+        // Check if any of the properties contain the search query
+        return manufacturer.includes(searchQuery) || model.includes(searchQuery) || price.includes(searchQuery);
+    });
+
+    // Rearrange the images based on the filtered array
+    rearrange(filteredObjects);
+});
+
+	
+  </script>
+</body>
+
+</html>
